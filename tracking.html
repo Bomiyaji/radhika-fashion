@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radhika Fashion Collection - Order Status</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --fk-blue: #2874f0;
+      --fk-green: #388e3c;
+      --bg-gray: #f1f3f6;
+      --text-dark: #212121;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 40px; }
+    .header { background-color: var(--fk-blue); color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+    .brand-logo { font-size: 18px; font-weight: 800; font-style: italic; }
+    .brand-logo span { color: #ffe500; font-style: normal; font-size: 12px; }
+    .container { max-width: 500px; margin: 15px auto; padding: 0 10px; }
+    .card { background: #fff; border-radius: 4px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e0e0e0; margin-bottom: 15px; }
+    .success-box { text-align: center; padding: 10px 0; }
+    .success-icon { width: 60px; height: 60px; background: #e8f5e9; color: var(--fk-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 12px auto; }
+    .order-badge { background: #e3f2fd; color: var(--fk-blue); display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: 700; margin: 10px 0; font-size: 13px; }
+
+    .tracking-container { margin-top: 15px; padding-left: 5px; text-align: left; }
+    .track-step { display: flex; gap: 12px; position: relative; padding-bottom: 24px; }
+    .track-step:last-child { padding-bottom: 0; }
+    .track-step:not(:last-child):before { content: ''; position: absolute; left: 10px; top: 22px; width: 2px; height: calc(100% - 8px); background-color: #e0e0e0; }
+    .track-step.completed:not(:last-child):before { background-color: var(--fk-green); }
+    
+    .track-icon { width: 22px; height: 22px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; z-index: 2; }
+    .track-step.completed .track-icon { background: var(--fk-green); }
+    .track-step.active .track-icon { background: var(--fk-blue); box-shadow: 0 0 0 4px rgba(40,116,240,0.2); }
+    
+    .track-content h4 { font-size: 13px; font-weight: 700; color: #212121; }
+    .track-content p { font-size: 11px; color: #878787; margin-top: 2px; }
+    .btn-home { display: block; width: 100%; text-align: center; background: var(--fk-blue); color: #fff; padding: 12px; border-radius: 4px; text-decoration: none; font-weight: 700; margin-top: 15px; text-transform: uppercase; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="brand-logo">Radhika Fashion Collection <span>Order Status</span></div>
+  </div>
+
+  <div class="container">
+    <div class="card success-box">
+      <div class="success-icon"><i class="fa-solid fa-check"></i></div>
+      <h2 style="color: #212121; font-size: 18px; margin-bottom: 4px;">Order Placed Successfully!</h2>
+      <p style="color: #666; font-size: 12px;">Payment Status: <b style="color:var(--fk-green);">Approved by Admin</b></p>
+
+      <div class="order-badge">
+        Order ID: #<span id="displayOrderId">849201</span>
+      </div>
+
+      <div style="background: #f9f9f9; padding: 12px; border-radius: 4px; font-size: 12px; text-align: left; margin: 12px 0; border: 1px solid #e0e0e0; line-height: 1.4;">
+        <div><strong>Customer Name:</strong> <span id="displayName"></span></div>
+        <div><strong>Delivery Address:</strong> <span id="displayAddress"></span></div>
+        <div><strong>Item Selected:</strong> <span id="displayItem"></span></div>
+        <div><strong>Courier Partner:</strong> Express / BlueDart</div>
+      </div>
+
+      <p style="font-size: 12px; font-weight: 700; margin: 15px 0 8px 0; text-align: left; color: #333;">Live Tracking Updates:</p>
+
+      <div class="tracking-container">
+        <div class="track-step completed">
+          <div class="track-icon"><i class="fa-solid fa-check"></i></div>
+          <div class="track-content">
+            <h4>Payment Approved by Admin</h4>
+            <p>Aapka payment successfully verify aur approve kar liya gaya hai.</p>
+          </div>
+        </div>
+
+        <div class="track-step completed">
+          <div class="track-icon"><i class="fa-solid fa-check"></i></div>
+          <div class="track-content">
+            <h4>Order Confirmed & Packed</h4>
+            <p>Kurti safely pack kar di gayi hai warehouse me.</p>
+          </div>
+        </div>
+
+        <div class="track-step active">
+          <div class="track-icon"><i class="fa-solid fa-truck"></i></div>
+          <div class="track-content">
+            <h4>Dispatched via Express / BlueDart</h4>
+            <p>Courier partner ko hand-over kar diya gaya hai.</p>
+          </div>
+        </div>
+
+        <div class="track-step">
+          <div class="track-icon">4</div>
+          <div class="track-content">
+            <h4>Out for Delivery</h4>
+            <p>Jald hi aapke diye gaye address par pahunchega.</p>
+          </div>
+        </div>
+      </div>
+
+      <a href="index.html" class="btn-home"><i class="fa-solid fa-rotate-right"></i> Place Another Order</a>
+    </div>
+  </div>
+
+  <script>
+    const savedData = JSON.parse(localStorage.getItem('radhikaOrder'));
+    if (savedData) {
+      document.getElementById('displayOrderId').innerText = savedData.orderId;
+      document.getElementById('displayName').innerText = savedData.name;
+      document.getElementById('displayAddress').innerText = savedData.address + ' (' + savedData.location + ')';
+      document.getElementById('displayItem').innerText = savedData.item;
+    }
+  </script>
+</body>
+</html>
