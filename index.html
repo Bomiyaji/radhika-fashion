@@ -33,6 +33,7 @@
     .btn-action:hover { background-color: #e55613; }
     .toggle-auth { text-align: center; margin-top: 10px; font-size: 12px; color: var(--fk-blue); cursor: pointer; font-weight: 600; }
     .hidden { display: none; }
+    .alert-box { background: #ffebee; color: #c62828; padding: 10px; border-radius: 4px; font-size: 12px; margin-bottom: 12px; border: 1px solid #ffcdd2; display: none; }
   </style>
 </head>
 <body>
@@ -47,10 +48,12 @@
   </div>
 
   <div class="container">
-    <!-- Auth Card (Password Based Login/Register) -->
+    <!-- Auth Card -->
     <div class="card" id="authCard">
       <div class="section-title"><i class="fa-solid fa-lock" style="color: var(--fk-blue);"></i> <span id="authTitle">Customer Login</span></div>
       
+      <div class="alert-box" id="authAlert"></div>
+
       <div class="form-group">
         <label>Email ID *</label>
         <input type="email" id="authEmail" class="form-control" placeholder="Enter your email" required>
@@ -64,7 +67,15 @@
       <div class="toggle-auth" id="toggleAuthText" onclick="toggleAuthMode()">New User? Create Account with Password</div>
     </div>
 
-    <!-- Checkout Form (Hidden until logged in) -->
+    <!-- Previous Order Notice Card (If found) -->
+    <div class="card hidden" id="previousOrderCard" style="background: #e8f5e9; border-color: #c8e6c9;">
+      <div class="section-title" style="color: #2e7d32;"><i class="fa-solid fa-clipboard-check"></i> Welcome Back! Previous Order Found</div>
+      <p style="font-size: 12px; color: #333; margin-bottom: 8px;">We found an existing order associated with your account:</p>
+      <div id="prevOrderDetails" style="font-size: 12px; line-height: 1.5; color: #444;"></div>
+      <button type="button" class="btn-action" style="background: #388e3c; margin-top: 12px;" onclick="goToTracking()">View Live Tracking Status</button>
+    </div>
+
+    <!-- Checkout Form -->
     <div class="card hidden" id="orderCard">
       <div class="section-title"><i class="fa-solid fa-truck-fast" style="color: var(--fk-blue);"></i> Enter Delivery Details</div>
       
@@ -135,11 +146,10 @@
     </div>
   </div>
 
-  <!-- Firebase SDKs -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB6Um_HJ8vyaaSm-JMzdGIDl8pZdw4yZ1U",
@@ -156,31 +166,81 @@
     const db = getFirestore(app);
 
     let isRegisterMode = false;
+    let loggedInEmail = "";
+
     window.toggleAuthMode = function() {
       isRegisterMode = !isRegisterMode;
       document.getElementById('authTitle').innerText = isRegisterMode ? "Create Password Account" : "Customer Login";
       document.getElementById('authBtn').innerText = isRegisterMode ? "Register & Continue" : "Login to Store";
       document.getElementById('toggleAuthText').innerText = isRegisterMode ? "Already have an account? Login" : "New User? Create Account with Password";
+      document.getElementById('authAlert').style.display = 'none';
     }
 
     window.handleAuth = async function() {
-      const email = document.getElementById('authEmail').value;
+      const email = document.getElementById('authEmail').value.trim();
       const password = document.getElementById('authPassword').value;
-      if(!email || !password) { alert("Please enter email and password!"); return; }
+      const alertBox = document.getElementById('authAlert');
+      
+      if(!email || !password) {
+        alertBox.innerText = "Error: Please enter both email and password!";
+        alertBox.style.display = 'block';
+        return;
+      }
 
       try {
         if(isRegisterMode) {
           await createUserWithEmailAndPassword(auth, email, password);
-          alert("Account created successfully!");
         } else {
           await signInWithEmailAndPassword(auth, email, password);
-          alert("Logged in successfully!");
         }
+        
+        loggedInEmail = email;
         document.getElementById('authCard').classList.add('hidden');
-        document.getElementById('orderCard').classList.remove('hidden');
+        checkPreviousOrders(email);
+
       } catch(error) {
-        alert("Auth Error: " + error.message);
+        let errorMsg = error.message;
+        if(error.code === 'auth/invalid-email') errorMsg = "Invalid email address format.";
+        else if(error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') errorMsg = "Invalid email or incorrect password. Please check your credentials.";
+        else if(error.code === 'auth/wrong-password') errorMsg = "Incorrect password entered.";
+        else if(error.code === 'auth/email-already-in-use') errorMsg = "Email already registered. Please login instead.";
+        
+        alertBox.innerText = "Authentication Error: " + errorMsg;
+        alertBox.style.display = 'block';
       }
+    }
+
+    async function checkPreviousOrders(email) {
+      try {
+        const q = query(collection(db, "orders"), where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          // Previous order found!
+          let orderData = null;
+          querySnapshot.forEach((doc) => {
+            orderData = doc.data();
+          });
+          localStorage.setItem('radhikaOrder', JSON.stringify(orderData));
+
+          document.getElementById('prevOrderDetails').innerHTML = `
+            <b>Order ID:</b> #${orderData.orderId}<br>
+            <b>Name:</b> ${orderData.name}<br>
+            <b>Item:</b> ${orderData.item}<br>
+            <b>Status:</b> Approved by Admin
+          `;
+          document.getElementById('previousOrderCard').classList.remove('hidden');
+        } else {
+          // No order found, open fresh checkout form
+          document.getElementById('orderCard').classList.remove('hidden');
+        }
+      } catch (e) {
+        document.getElementById('orderCard').classList.remove('hidden');
+      }
+    }
+
+    window.goToTracking = function() {
+      window.location.href = "tracking.html";
     }
 
     window.submitOrder = async function() {
@@ -188,6 +248,7 @@
       if (!form.checkValidity()) { form.reportValidity(); return; }
 
       const orderData = {
+        email: loggedInEmail,
         name: document.getElementById('name').value,
         phone: document.getElementById('phone').value,
         address: document.getElementById('address').value,
