@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radhika Fashion Collection - Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --fk-blue: #2874f0;
+      --fk-yellow: #ffe500;
+      --fk-orange: #fb641b;
+      --fk-green: #388e3c;
+      --bg-gray: #f1f3f6;
+      --text-dark: #212121;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 40px; }
+    .header { background-color: var(--fk-blue); color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
+    .brand-logo { font-size: 18px; font-weight: 800; font-style: italic; }
+    .brand-logo span { color: var(--fk-yellow); font-style: normal; font-size: 12px; background: rgba(255,255,255,0.15); padding: 2px 5px; border-radius: 3px; }
+    .secure-badge { font-size: 11px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; font-weight: 600; }
+    .banner { background: linear-gradient(135deg, #2e7d32, #388e3c); color: #fff; font-size: 12px; font-weight: 700; text-align: center; padding: 8px; }
+    .container { max-width: 500px; margin: 15px auto; padding: 0 10px; }
+    .card { background: #fff; border-radius: 4px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e0e0e0; margin-bottom: 15px; }
+    .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; color: var(--text-dark); }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #333; }
+    .form-control { width: 100%; padding: 11px; border: 1px solid #d4d5d9; border-radius: 4px; font-size: 14px; outline: none; background: #fff; }
+    .form-control:focus { border-color: var(--fk-blue); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-action { width: 100%; background-color: var(--fk-orange); color: white; border: none; padding: 13px; font-size: 14px; font-weight: 700; border-radius: 4px; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+    .btn-action:hover { background-color: #e55613; }
+    .toggle-auth { text-align: center; margin-top: 10px; font-size: 12px; color: var(--fk-blue); cursor: pointer; font-weight: 600; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="brand-logo">Radhika Fashion Collection <span>Store</span></div>
+    <div class="secure-badge"><i class="fa-solid fa-shield-halved"></i> Secure</div>
+  </div>
+
+  <div class="banner">
+    <i class="fa-solid fa-circle-check"></i> Payment Status: APPROVED BY ADMIN (Pre-Paid)
+  </div>
+
+  <div class="container">
+    <!-- Auth Card (Password Based Login/Register) -->
+    <div class="card" id="authCard">
+      <div class="section-title"><i class="fa-solid fa-lock" style="color: var(--fk-blue);"></i> <span id="authTitle">Customer Login</span></div>
+      
+      <div class="form-group">
+        <label>Email ID *</label>
+        <input type="email" id="authEmail" class="form-control" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label>Password *</label>
+        <input type="password" id="authPassword" class="form-control" placeholder="Enter password" required>
+      </div>
+
+      <button type="button" class="btn-action" id="authBtn" onclick="handleAuth()">Login to Store</button>
+      <div class="toggle-auth" id="toggleAuthText" onclick="toggleAuthMode()">New User? Create Account with Password</div>
+    </div>
+
+    <!-- Checkout Form (Hidden until logged in) -->
+    <div class="card hidden" id="orderCard">
+      <div class="section-title"><i class="fa-solid fa-truck-fast" style="color: var(--fk-blue);"></i> Enter Delivery Details</div>
+      
+      <form id="orderForm">
+        <div class="form-group">
+          <label>Your Full Name *</label>
+          <input type="text" id="name" class="form-control" placeholder="Enter full name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Full Address *</label>
+          <input type="text" id="address" class="form-control" placeholder="House No., Street, Area, Landmark" required>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>State *</label>
+            <select id="state" class="form-control" required>
+              <option value="">Select State</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Other State">Other State</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Pincode *</label>
+            <input type="text" id="pincode" class="form-control" placeholder="6-digit Pincode" maxlength="6" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Select Kurti Color *</label>
+          <select id="color" class="form-control" required>
+            <option value="">Choose Color</option>
+            <option value="Yellow / Multi">Yellow / Multi</option>
+            <option value="Royal Blue">Royal Blue</option>
+            <option value="Maroon">Maroon</option>
+            <option value="Bottle Green">Bottle Green</option>
+            <option value="Baby Pink">Baby Pink</option>
+            <option value="Classic Black">Classic Black</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Select Size *</label>
+          <select id="size" class="form-control" required>
+            <option value="">Choose Size</option>
+            <option value="S">S</option><option value="M">M</option><option value="L">L</option>
+            <option value="XL">XL</option><option value="XXL">XXL</option><option value="5XL">5XL</option><option value="6XL">6XL</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Contact Number (WhatsApp) *</label>
+          <input type="tel" id="phone" class="form-control" placeholder="10-digit mobile number" maxlength="10" required>
+        </div>
+
+        <button type="button" class="btn-action" onclick="submitOrder()">
+          Confirm Order & Track Status <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB6Um_HJ8vyaaSm-JMzdGIDl8pZdw4yZ1U",
+      authDomain: "radhika-fashion-ae2db.firebaseapp.com",
+      projectId: "radhika-fashion-ae2db",
+      storageBucket: "radhika-fashion-ae2db.firebasestorage.app",
+      messagingSenderId: "703545319327",
+      appId: "1:703545319327:web:b3f77140a2ddfe09c3e7aa",
+      measurementId: "G-T2JZXC0MH5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let isRegisterMode = false;
+    window.toggleAuthMode = function() {
+      isRegisterMode = !isRegisterMode;
+      document.getElementById('authTitle').innerText = isRegisterMode ? "Create Password Account" : "Customer Login";
+      document.getElementById('authBtn').innerText = isRegisterMode ? "Register & Continue" : "Login to Store";
+      document.getElementById('toggleAuthText').innerText = isRegisterMode ? "Already have an account? Login" : "New User? Create Account with Password";
+    }
+
+    window.handleAuth = async function() {
+      const email = document.getElementById('authEmail').value;
+      const password = document.getElementById('authPassword').value;
+      if(!email || !password) { alert("Please enter email and password!"); return; }
+
+      try {
+        if(isRegisterMode) {
+          await createUserWithEmailAndPassword(auth, email, password);
+          alert("Account created successfully!");
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+          alert("Logged in successfully!");
+        }
+        document.getElementById('authCard').classList.add('hidden');
+        document.getElementById('orderCard').classList.remove('hidden');
+      } catch(error) {
+        alert("Auth Error: " + error.message);
+      }
+    }
+
+    window.submitOrder = async function() {
+      const form = document.getElementById('orderForm');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const orderData = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        location: document.getElementById('state').value + ' - ' + document.getElementById('pincode').value,
+        item: document.getElementById('color').value + ' | Size: ' + document.getElementById('size').value,
+        orderId: Math.floor(100000 + Math.random() * 900000),
+        status: "Dispatched via Express",
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await addDoc(collection(db, "orders"), orderData);
+        localStorage.setItem('radhikaOrder', JSON.stringify(orderData));
+        window.location.href = "tracking.html";
+      } catch (e) {
+        alert("Error placing order: " + e.message);
+      }
+    }
+  </script>
+</body>
+</html>
