@@ -49,6 +49,8 @@
 
     .track-step:last-child { padding-bottom: 0; }
     .track-step:not(:last-child):before { content: ''; position: absolute; left: 11px; top: 24px; width: 2px; height: calc(100% - 10px); background-color: #e0e0e0; transition: background 0.3s; }
+    
+    /* Connectors turn green when completed */
     .track-step.completed:not(:last-child):before { background-color: var(--fk-green); }
     
     .track-icon { width: 24px; height: 24px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; z-index: 2; flex-shrink: 0; transition: all 0.3s ease; }
@@ -118,7 +120,7 @@
 
       <div class="tracking-container">
         <!-- Step 1 -->
-        <div class="track-step completed">
+        <div class="track-step completed" id="step1Element">
           <div class="track-icon"><i class="fa-solid fa-check"></i></div>
           <div class="track-content">
             <h4>Order Placed & Registered</h4>
@@ -198,7 +200,7 @@
       const status = savedData.status || "";
 
       if (status.includes("Out for Delivery")) {
-        // --- STEP 4 COMPLETED ---
+        // --- STEP 4 COMPLETED (Out for Delivery) ---
         statusDisplay.innerText = "Out for Delivery";
         statusDisplay.style.color = "var(--fk-green)";
 
@@ -213,10 +215,10 @@
         step4.className = "track-step completed";
         step4Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
         outStatusText.innerText = "Your item is out for delivery with our delivery partner today.";
-        timeStep4.innerText = "In Progress / Today";
+        timeStep4.innerText = "Out for Delivery Today";
 
       } else if (status.includes("Dispatched")) {
-        // --- STEP 3 COMPLETED ---
+        // --- STEP 3 COMPLETED (Dispatched) ---
         statusDisplay.innerText = "Dispatched via Express";
         statusDisplay.style.color = "var(--fk-green)";
 
@@ -224,13 +226,18 @@
         step2Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
         timeStep2.innerText = "Approved by Admin";
 
-        step3.className = "track-step active";
-        step3Icon.innerHTML = '<i class="fa-solid fa-truck"></i>';
+        step3.className = "track-step completed";
+        step3Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
         dispatchStatusText.innerText = "Your item has been picked up by courier partner and is in transit.";
         timeStep3.innerText = "In Transit";
 
+        step4.className = "track-step active";
+        step4Icon.innerHTML = '<i class="fa-solid fa-truck-fast"></i>';
+        outStatusText.innerText = "Your item will arrive at your address soon.";
+        timeStep4.innerText = "Expected Soon";
+
       } else if (status.includes("Approved")) {
-        // --- STEP 2 COMPLETED ---
+        // --- STEP 2 COMPLETED (Approved) ---
         statusDisplay.innerText = "Approved by Admin";
         statusDisplay.style.color = "var(--fk-green)";
 
@@ -243,6 +250,9 @@
         step3Icon.innerHTML = '<i class="fa-solid fa-truck"></i>';
         dispatchStatusText.innerText = "Ready for dispatch / Handing over to courier.";
         timeStep3.innerText = "Processing";
+
+        step4.className = "track-step";
+        step4Icon.innerHTML = "4";
 
       } else {
         // --- PENDING STATE ---
