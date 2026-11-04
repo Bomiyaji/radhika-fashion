@@ -9,6 +9,7 @@
     :root {
       --fk-blue: #2874f0;
       --fk-green: #388e3c;
+      --fk-red: #d32f2f;
       --bg-gray: #f1f3f6;
       --text-dark: #212121;
     }
@@ -21,7 +22,6 @@
     
     .container { max-width: 500px; margin: 15px auto; padding: 0 10px; }
     
-    /* Futuristic Card Entrance Animation */
     .card { 
       background: #fff; border-radius: 6px; padding: 18px; 
       box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; 
@@ -30,7 +30,6 @@
     
     .success-box { text-align: center; padding: 10px 0; }
     
-    /* Glowing & Bouncing Success Icon */
     .success-icon { 
       width: 70px; height: 70px; background: #e8f5e9; color: var(--fk-green); 
       border-radius: 50%; display: flex; align-items: center; justify-content: center; 
@@ -42,7 +41,6 @@
 
     .tracking-container { margin-top: 20px; padding-left: 5px; text-align: left; }
     
-    /* Futuristic Staggered Slide Animation */
     .track-step { display: flex; gap: 14px; position: relative; padding-bottom: 26px; opacity: 0; transform: translateY(15px); animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .track-step:nth-child(1) { animation-delay: 0.15s; }
     .track-step:nth-child(2) { animation-delay: 0.3s; }
@@ -55,8 +53,8 @@
     
     .track-icon { width: 24px; height: 24px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; z-index: 2; flex-shrink: 0; transition: all 0.3s ease; }
     .track-step.completed .track-icon { background: var(--fk-green); box-shadow: 0 0 10px rgba(56,142,60,0.4); }
+    .track-step.pending-alert .track-icon { background: var(--fk-red); box-shadow: 0 0 10px rgba(211,47,47,0.4); }
     
-    /* Futuristic Pulsing Active Icon */
     .track-step.active .track-icon { 
       background: var(--fk-blue); 
       box-shadow: 0 0 0 6px rgba(40,116,240,0.25); 
@@ -67,7 +65,6 @@
     .track-content p { font-size: 11px; color: #555; margin-top: 3px; }
     .track-time { font-size: 10px; color: #878787; margin-top: 4px; font-weight: 600; }
     
-    /* High-Tech Glowing Button */
     .btn-home { 
       display: block; width: 100%; text-align: center; background: var(--fk-blue); color: #fff; 
       padding: 13px; border-radius: 4px; text-decoration: none; font-weight: 700; margin-top: 20px; 
@@ -76,7 +73,6 @@
     }
     .btn-home:hover { background: #1d5fc7; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(40,116,240,0.4); }
 
-    /* Advanced Keyframe Animations */
     @keyframes futuristicPop {
       0% { opacity: 0; transform: scale(0.95) translateY(20px); }
       100% { opacity: 1; transform: scale(1) translateY(0); }
@@ -105,7 +101,7 @@
     <div class="card success-box">
       <div class="success-icon"><i class="fa-solid fa-check"></i></div>
       <h2 style="color: #212121; font-size: 18px; margin-bottom: 4px;">Order Placed Successfully!</h2>
-      <p style="color: #666; font-size: 12px;">Order Status: <b id="displayStatus" style="color:var(--fk-green);">Pending Admin Approval</b></p>
+      <p style="color: #666; font-size: 12px;">Order Status: <b id="displayStatus" style="color:var(--fk-red);">Pending Admin Approval</b></p>
 
       <div class="order-badge">
         Order ID: #<span id="displayOrderId">849201</span>
@@ -127,32 +123,32 @@
           <div class="track-content">
             <h4>Order Placed & Registered</h4>
             <p>Your order has been recorded in the system successfully.</p>
-            <div class="track-time" id="timeStep1">Loading real-time date...</div>
+            <div class="track-time" id="timeStep1">Loading...</div>
           </div>
         </div>
 
-        <!-- Step 2 -->
-        <div class="track-step active">
-          <div class="track-icon"><i class="fa-solid fa-clock"></i></div>
+        <!-- Step 2 (Admin Approval Step) -->
+        <div class="track-step pending-alert" id="step2Element">
+          <div class="track-icon" id="step2Icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
           <div class="track-content">
             <h4>Admin Verification & Approval</h4>
-            <p id="adminStatusText">Checking payment / state shipping policy restrictions.</p>
-            <div class="track-time" id="timeStep2">Awaiting action</div>
+            <p id="adminStatusText">Awaiting Admin approval due to shipping/state restrictions.</p>
+            <div class="track-time" id="timeStep2">Pending Review</div>
           </div>
         </div>
 
         <!-- Step 3 -->
-        <div class="track-step">
+        <div class="track-step" id="step3Element">
           <div class="track-icon">3</div>
           <div class="track-content">
             <h4>Dispatched via Express / BlueDart</h4>
-            <p>Item will be picked up by delivery partner after approval.</p>
-            <div class="track-time">In Transit</div>
+            <p>Item will be handed over to courier partner after admin approval.</p>
+            <div class="track-time">Waiting for Approval</div>
           </div>
         </div>
 
         <!-- Step 4 -->
-        <div class="track-step">
+        <div class="track-step" id="step4Element">
           <div class="track-icon">4</div>
           <div class="track-content">
             <h4>Out for Delivery</h4>
@@ -173,23 +169,48 @@
       document.getElementById('displayName').innerText = savedData.name;
       document.getElementById('displayAddress').innerText = savedData.address + ' (' + savedData.location + ')';
       document.getElementById('displayItem').innerText = savedData.item;
-      document.getElementById('displayStatus').innerText = savedData.status;
-
-      if(savedData.status.includes("Approved")) {
-        document.getElementById('adminStatusText').innerText = "Admin has approved your order and restriction has been removed.";
-      }
+      
+      const statusDisplay = document.getElementById('displayStatus');
+      const step2 = document.getElementById('step2Element');
+      const step2Icon = document.getElementById('step2Icon');
+      const adminStatusText = document.getElementById('adminStatusText');
+      const timeStep2 = document.getElementById('timeStep2');
+      const step3 = document.getElementById('step3Element');
 
       let orderDate = savedData.createdAt ? new Date(savedData.createdAt) : new Date();
-      
       function formatDate(dateObj) {
         const options = { weekday: 'short', day: 'numeric', month: 'short', year: '2-digit' };
         const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
         return dateObj.toLocaleDateString('en-US', options) + ' - ' + dateObj.toLocaleTimeString('en-US', timeOptions).toLowerCase();
       }
-
       document.getElementById('timeStep1').innerText = formatDate(orderDate);
-      let verifyDate = new Date(orderDate.getTime() + (15 * 60 * 1000));
-      document.getElementById('timeStep2').innerText = formatDate(verifyDate);
+
+      // Check if Admin Approved
+      if (savedData.status && (savedData.status.includes("Approved") || savedData.status.includes("Dispatched"))) {
+        // --- APPROVED STATE ---
+        statusDisplay.innerText = "Approved by Admin (Dispatched)";
+        statusDisplay.style.color = "var(--fk-green)";
+
+        // Turn Step 2 Green
+        step2.className = "track-step completed";
+        step2Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
+        adminStatusText.innerText = "Admin has successfully verified and approved your order.";
+        timeStep2.innerText = "Approved by Admin";
+
+        // Activate Step 3
+        step3.className = "track-step active";
+        step3.querySelector('.track-icon').innerHTML = '<i class="fa-solid fa-truck"></i>';
+      } else {
+        // --- PENDING STATE (RED / ALERT) ---
+        statusDisplay.innerText = "Pending Admin Approval (COD Restricted)";
+        statusDisplay.style.color = "var(--fk-red)";
+
+        // Keep Step 2 Red/Alert
+        step2.className = "track-step pending-alert";
+        step2Icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+        adminStatusText.innerText = "Pending Admin Approval. COD is restricted for your state. Awaiting verification.";
+        timeStep2.innerText = "Action Required by Admin";
+      }
     }
   </script>
 </body>
