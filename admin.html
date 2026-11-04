@@ -27,14 +27,12 @@
 <body>
 
   <div class="admin-container">
-    <!-- Admin Login -->
     <div class="login-box" id="adminLoginCard">
       <h2><i class="fa-solid fa-lock"></i> Secret Admin Login</h2>
       <input type="password" id="adminPass" class="form-control" placeholder="Enter Admin Secret Password">
       <button class="btn" onclick="checkAdminPassword()">Login to Panel</button>
     </div>
 
-    <!-- Admin Orders Dashboard -->
     <div class="panel-box hidden" id="adminPanelCard">
       <h2><i class="fa-solid fa-boxes-stacked"></i> Live Orders Dashboard (Radhika Fashion)</h2>
       <div style="overflow-x: auto;">
@@ -48,9 +46,7 @@
               <th>Status & Control Actions</th>
             </tr>
           </thead>
-          <tbody id="ordersTableBody">
-            <!-- Orders injected via Firebase -->
-          </tbody>
+          <tbody id="ordersTableBody"></tbody>
         </table>
       </div>
     </div>
@@ -104,13 +100,13 @@
               <td>${order.item}</td>
               <td>
                 <span id="status-${docId}" style="color:var(--fk-green); font-weight:bold;">${order.status || 'Pending Admin Approval'}</span><br><br>
-                <button class="btn-approve" onclick="updateOrderStatus('${docId}', 'Approved by Admin')">
+                <button class="btn-approve" onclick="updateOrderStatus('${docId}', 'Approved by Admin', ${order.orderId})">
                   <i class="fa-solid fa-check"></i> 1. Approve Order
                 </button>
-                <button class="btn-dispatch" onclick="updateOrderStatus('${docId}', 'Dispatched via Express')">
+                <button class="btn-dispatch" onclick="updateOrderStatus('${docId}', 'Dispatched via Express', ${order.orderId})">
                   <i class="fa-solid fa-truck"></i> 2. Mark Dispatched
                 </button>
-                <button class="btn-out" onclick="updateOrderStatus('${docId}', 'Out for Delivery')">
+                <button class="btn-out" onclick="updateOrderStatus('${docId}', 'Out for Delivery', ${order.orderId})">
                   <i class="fa-solid fa-box-open"></i> 3. Out for Delivery
                 </button>
               </td>
@@ -126,12 +122,20 @@
       }
     }
 
-    window.updateOrderStatus = async function(docId, newStatus) {
+    window.updateOrderStatus = async function(docId, newStatus, orderIdNum) {
       try {
         const orderRef = doc(db, "orders", docId);
         await updateDoc(orderRef, {
           status: newStatus
         });
+
+        // LocalStorage bhi update kar do agar wahi order currently viewed hai
+        let currentSaved = JSON.parse(localStorage.getItem('radhikaOrder'));
+        if(currentSaved && currentSaved.orderId == orderIdNum) {
+          currentSaved.status = newStatus;
+          localStorage.setItem('radhikaOrder', JSON.stringify(currentSaved));
+        }
+
         alert("Order status successfully updated to: " + newStatus);
         loadOrders();
       } catch (e) {
