@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radhika Fashion - Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root { --fk-blue: #2874f0; --bg-gray: #f1f3f6; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background-color: var(--bg-gray); display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .login-card { background: #fff; padding: 25px; border-radius: 8px; width: 100%; max-width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .brand { font-size: 20px; font-weight: 800; color: var(--fk-blue); text-align: center; margin-bottom: 20px; }
+    .form-control { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+    .btn { background: var(--fk-blue); color: #fff; border: none; padding: 12px; width: 100%; font-weight: 700; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+    .toggle-link { text-align: center; margin-top: 15px; font-size: 12px; color: #555; cursor: pointer; }
+    .toggle-link span { color: var(--fk-blue); font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="brand">Radhika Fashion Collection</div>
+    <h3 id="formTitle" style="text-align: center; margin-bottom: 15px; font-size: 16px;">Customer Login</h3>
+    <div id="authError" style="color: red; font-size: 11px; text-align: center; margin-bottom: 10px;"></div>
+
+    <input type="email" id="userEmail" class="form-control" placeholder="Enter Email ID" required>
+    <input type="password" id="userPassword" class="form-control" placeholder="Enter Password" required>
+    
+    <button class="btn" id="authBtn" onclick="handleAuth()">Login</button>
+    
+    <div class="toggle-link" onclick="toggleAuthMode()">
+      <span id="toggleText">New user? Create an account</span>
+    </div>
+  </div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
