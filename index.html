@@ -20,20 +20,65 @@
     .brand-logo { font-size: 18px; font-weight: 800; font-style: italic; }
     .brand-logo span { color: var(--fk-yellow); font-style: normal; font-size: 12px; background: rgba(255,255,255,0.15); padding: 2px 5px; border-radius: 3px; }
     .secure-badge { font-size: 11px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; font-weight: 600; }
-    .warning-notice { background: #fff3cd; color: #856404; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; border-bottom: 1px solid #ffeeba; }
-    .banner { background: linear-gradient(135deg, #2e7d32, #388e3c); color: #fff; font-size: 12px; font-weight: 700; text-align: center; padding: 8px; }
+    
+    .diwali-banner {
+      background: linear-gradient(135deg, #ff9800, #ff5722, #e91e63);
+      color: #fff;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      text-align: center;
+      border-bottom: 2px solid #ffd700;
+      animation: glowPulse 2s infinite alternate;
+      box-shadow: 0 2px 8px rgba(255, 87, 34, 0.4);
+    }
+    @keyframes glowPulse {
+      0% { background-color: #ff5722; transform: scale(1); }
+      100% { background-color: #e91e63; transform: scale(1.01); }
+    }
+
     .container { max-width: 500px; margin: 15px auto; padding: 0 10px; }
-    .card { background: #fff; border-radius: 4px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e0e0e0; margin-bottom: 15px; }
+    .card {
+      background: #fff;
+      border-radius: 6px;
+      padding: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border: 1px solid #e0e0e0;
+      margin-bottom: 15px;
+      animation: fadeInUp 0.5s ease-in-out;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; color: var(--text-dark); }
     .form-group { margin-bottom: 14px; }
     .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #333; }
-    .form-control { width: 100%; padding: 11px; border: 1px solid #d4d5d9; border-radius: 4px; font-size: 14px; outline: none; background: #fff; }
-    .form-control:focus { border-color: var(--fk-blue); }
+    .form-control { width: 100%; padding: 11px; border: 1px solid #d4d5d9; border-radius: 4px; font-size: 14px; outline: none; background: #fff; transition: border-color 0.2s; }
+    .form-control:focus { border-color: var(--fk-blue); box-shadow: 0 0 5px rgba(40, 116, 240, 0.3); }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .btn-action { width: 100%; background-color: var(--fk-orange); color: white; border: none; padding: 13px; font-size: 14px; font-weight: 700; border-radius: 4px; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+    
+    .btn-action {
+      width: 100%;
+      background-color: var(--fk-orange);
+      color: white;
+      border: none;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 10px rgba(251, 100, 27, 0.3);
+    }
     .btn-action:hover { background-color: #e55613; }
-    .toggle-auth { text-align: center; margin-top: 10px; font-size: 12px; color: var(--fk-blue); cursor: pointer; font-weight: 600; }
-    .hidden { display: none; }
+    .toggle-auth { text-align: center; margin-top: 12px; font-size: 12px; color: var(--fk-blue); cursor: pointer; font-weight: 600; }
+    .hidden { display: none !important; }
     .alert-box { background: #ffebee; color: #c62828; padding: 10px; border-radius: 4px; font-size: 12px; margin-bottom: 12px; border: 1px solid #ffcdd2; display: none; }
     .logout-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 4px 8px; font-size: 11px; border-radius: 4px; cursor: pointer; font-weight: 600; }
   </style>
@@ -48,12 +93,8 @@
     </div>
   </div>
 
-  <div class="warning-notice">
-    <i class="fa-solid fa-triangle-exclamation"></i> Note: COD is NOT available for other states (outside Delhi) due to shipping policies. Advance online payment / Admin approval required.
-  </div>
-
-  <div class="banner">
-    <i class="fa-solid fa-circle-check"></i> Payment Status: APPROVED BY ADMIN (Pre-Paid)
+  <div class="diwali-banner">
+    <i class="fa-solid fa-gift"></i> DIWALI SPECIAL OFFER: BUY 2 GET 1 FREE! <i class="fa-solid fa-fireworks"></i>
   </div>
 
   <div class="container">
@@ -126,16 +167,8 @@
         </div>
 
         <div class="form-group">
-          <label>Select Item Color / Design *</label>
-          <select id="color" class="form-control" required>
-            <option value="">Choose Item / Color</option>
-            <option value="Yellow / Multi Lehenga">Yellow / Multi Lehenga</option>
-            <option value="Royal Blue Kurti">Royal Blue Kurti</option>
-            <option value="Maroon Suit">Maroon Suit</option>
-            <option value="Bottle Green Kurti">Bottle Green Kurti</option>
-            <option value="Baby Pink Lehenga">Baby Pink Lehenga</option>
-            <option value="Classic Black Design">Classic Black Design</option>
-          </select>
+          <label>Item Name / Color / Design (Manual Type) *</label>
+          <input type="text" id="itemColor" class="form-control" placeholder="e.g. Royal Blue Kurti / Yellow Lehenga" required>
         </div>
 
         <div class="form-group">
@@ -181,7 +214,6 @@
     let isRegisterMode = false;
     let loggedInEmail = "";
 
-    // Persistent login check on page load
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loggedInEmail = user.email;
@@ -281,13 +313,18 @@
       const form = document.getElementById('orderForm');
       if (!form.checkValidity()) { form.reportValidity(); return; }
 
+      const selectedState = document.getElementById('state').value;
+      const itemVal = document.getElementById('itemColor').value;
+      const sizeVal = document.getElementById('size').value;
+
       const orderData = {
         email: loggedInEmail,
         name: document.getElementById('name').value,
         phone: document.getElementById('phone').value,
         address: document.getElementById('address').value,
-        location: document.getElementById('state').value + ' - ' + document.getElementById('pincode').value,
-        item: document.getElementById('color').value + ' | Size: ' + document.getElementById('size').value,
+        location: selectedState + ' - ' + document.getElementById('pincode').value,
+        item: itemVal + ' | Size: ' + sizeVal,
+        selectedState: selectedState,
         orderId: Math.floor(100000 + Math.random() * 900000),
         status: "Pending Admin Approval",
         createdAt: new Date().toISOString()
