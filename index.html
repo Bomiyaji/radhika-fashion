@@ -20,6 +20,7 @@
     .brand-logo { font-size: 18px; font-weight: 800; font-style: italic; }
     .brand-logo span { color: var(--fk-yellow); font-style: normal; font-size: 12px; background: rgba(255,255,255,0.15); padding: 2px 5px; border-radius: 3px; }
     .secure-badge { font-size: 11px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; font-weight: 600; }
+    .warning-notice { background: #fff3cd; color: #856404; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; border-bottom: 1px solid #ffeeba; }
     .banner { background: linear-gradient(135deg, #2e7d32, #388e3c); color: #fff; font-size: 12px; font-weight: 700; text-align: center; padding: 8px; }
     .container { max-width: 500px; margin: 15px auto; padding: 0 10px; }
     .card { background: #fff; border-radius: 4px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e0e0e0; margin-bottom: 15px; }
@@ -41,6 +42,10 @@
   <div class="header">
     <div class="brand-logo">Radhika Fashion Collection <span>Store</span></div>
     <div class="secure-badge"><i class="fa-solid fa-shield-halved"></i> Secure</div>
+  </div>
+
+  <div class="warning-notice">
+    <i class="fa-solid fa-triangle-exclamation"></i> Note: COD is NOT available for other states (outside Delhi) due to shipping policies. Advance online payment / Admin approval required.
   </div>
 
   <div class="banner">
@@ -67,7 +72,7 @@
       <div class="toggle-auth" id="toggleAuthText" onclick="toggleAuthMode()">New User? Create Account with Password</div>
     </div>
 
-    <!-- Previous Order Notice Card (If found) -->
+    <!-- Previous Order Notice Card -->
     <div class="card hidden" id="previousOrderCard" style="background: #e8f5e9; border-color: #c8e6c9;">
       <div class="section-title" style="color: #2e7d32;"><i class="fa-solid fa-clipboard-check"></i> Welcome Back! Previous Order Found</div>
       <p style="font-size: 12px; color: #333; margin-bottom: 8px;">We found an existing order associated with your account:</p>
@@ -113,15 +118,15 @@
         </div>
 
         <div class="form-group">
-          <label>Select Kurti Color *</label>
+          <label>Select Item Color / Design *</label>
           <select id="color" class="form-control" required>
-            <option value="">Choose Color</option>
-            <option value="Yellow / Multi">Yellow / Multi</option>
-            <option value="Royal Blue">Royal Blue</option>
-            <option value="Maroon">Maroon</option>
-            <option value="Bottle Green">Bottle Green</option>
-            <option value="Baby Pink">Baby Pink</option>
-            <option value="Classic Black">Classic Black</option>
+            <option value="">Choose Item / Color</option>
+            <option value="Yellow / Multi Lehenga">Yellow / Multi Lehenga</option>
+            <option value="Royal Blue Kurti">Royal Blue Kurti</option>
+            <option value="Maroon Suit">Maroon Suit</option>
+            <option value="Bottle Green Kurti">Bottle Green Kurti</option>
+            <option value="Baby Pink Lehenga">Baby Pink Lehenga</option>
+            <option value="Classic Black Design">Classic Black Design</option>
           </select>
         </div>
 
@@ -216,7 +221,6 @@
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-          // Previous order found!
           let orderData = null;
           querySnapshot.forEach((doc) => {
             orderData = doc.data();
@@ -227,11 +231,10 @@
             <b>Order ID:</b> #${orderData.orderId}<br>
             <b>Name:</b> ${orderData.name}<br>
             <b>Item:</b> ${orderData.item}<br>
-            <b>Status:</b> Approved by Admin
+            <b>Status:</b> ${orderData.status}
           `;
           document.getElementById('previousOrderCard').classList.remove('hidden');
         } else {
-          // No order found, open fresh checkout form
           document.getElementById('orderCard').classList.remove('hidden');
         }
       } catch (e) {
@@ -255,7 +258,7 @@
         location: document.getElementById('state').value + ' - ' + document.getElementById('pincode').value,
         item: document.getElementById('color').value + ' | Size: ' + document.getElementById('size').value,
         orderId: Math.floor(100000 + Math.random() * 900000),
-        status: "Dispatched via Express",
+        status: "Pending Admin Approval (COD Restricted)",
         createdAt: new Date().toISOString()
       };
 
