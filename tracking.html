@@ -14,76 +14,83 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 40px; }
-    .header { background-color: var(--fk-blue); color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+    
+    .header { background-color: var(--fk-blue); color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 8px rgba(40,116,240,0.3); }
     .brand-logo { font-size: 18px; font-weight: 800; font-style: italic; }
     .brand-logo span { color: #ffe500; font-style: normal; font-size: 12px; }
+    
     .container { max-width: 500px; margin: 15px auto; padding: 0 10px; }
     
-    /* Smooth Entrance Animation for Cards */
+    /* Futuristic Card Entrance Animation */
     .card { 
-      background: #fff; border-radius: 4px; padding: 16px; 
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e0e0e0; 
-      margin-bottom: 15px; animation: fadeInUp 0.6s ease-out; 
+      background: #fff; border-radius: 6px; padding: 18px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; 
+      margin-bottom: 15px; animation: futuristicPop 0.7s cubic-bezier(0.16, 1, 0.3, 1); 
     }
     
     .success-box { text-align: center; padding: 10px 0; }
     
-    /* Bounce Animation for Success Icon */
+    /* Glowing & Bouncing Success Icon */
     .success-icon { 
-      width: 65px; height: 65px; background: #e8f5e9; color: var(--fk-green); 
+      width: 70px; height: 70px; background: #e8f5e9; color: var(--fk-green); 
       border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-      font-size: 30px; margin: 0 auto 12px auto; animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      font-size: 32px; margin: 0 auto 14px auto; 
+      animation: bounceGlow 1.2s infinite alternate; 
     }
     
-    .order-badge { background: #e3f2fd; color: var(--fk-blue); display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: 700; margin: 10px 0; font-size: 13px; }
+    .order-badge { background: #e3f2fd; color: var(--fk-blue); display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 700; margin: 10px 0; font-size: 13px; box-shadow: 0 2px 6px rgba(40,116,240,0.15); }
 
-    .tracking-container { margin-top: 15px; padding-left: 5px; text-align: left; }
+    .tracking-container { margin-top: 20px; padding-left: 5px; text-align: left; }
     
-    /* Step-by-step Fade Animations with Delay */
-    .track-step { display: flex; gap: 12px; position: relative; padding-bottom: 24px; opacity: 0; animation: fadeInRight 0.5s ease-out forwards; }
-    .track-step:nth-child(1) { animation-delay: 0.2s; }
-    .track-step:nth-child(2) { animation-delay: 0.4s; }
-    .track-step:nth-child(3) { animation-delay: 0.6s; }
-    .track-step:nth-child(4) { animation-delay: 0.8s; }
+    /* Futuristic Staggered Slide Animation */
+    .track-step { display: flex; gap: 14px; position: relative; padding-bottom: 26px; opacity: 0; transform: translateY(15px); animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .track-step:nth-child(1) { animation-delay: 0.15s; }
+    .track-step:nth-child(2) { animation-delay: 0.3s; }
+    .track-step:nth-child(3) { animation-delay: 0.45s; }
+    .track-step:nth-child(4) { animation-delay: 0.6s; }
 
     .track-step:last-child { padding-bottom: 0; }
-    .track-step:not(:last-child):before { content: ''; position: absolute; left: 10px; top: 22px; width: 2px; height: calc(100% - 8px); background-color: #e0e0e0; }
+    .track-step:not(:last-child):before { content: ''; position: absolute; left: 11px; top: 24px; width: 2px; height: calc(100% - 10px); background-color: #e0e0e0; transition: background 0.3s; }
     .track-step.completed:not(:last-child):before { background-color: var(--fk-green); }
     
-    .track-icon { width: 22px; height: 22px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; z-index: 2; flex-shrink: 0; }
-    .track-step.completed .track-icon { background: var(--fk-green); }
+    .track-icon { width: 24px; height: 24px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; z-index: 2; flex-shrink: 0; transition: all 0.3s ease; }
+    .track-step.completed .track-icon { background: var(--fk-green); box-shadow: 0 0 10px rgba(56,142,60,0.4); }
     
-    /* Pulsing Animation for Active Step */
+    /* Futuristic Pulsing Active Icon */
     .track-step.active .track-icon { 
       background: var(--fk-blue); 
-      box-shadow: 0 0 0 4px rgba(40,116,240,0.2); 
-      animation: pulseGlow 1.5s infinite; 
+      box-shadow: 0 0 0 6px rgba(40,116,240,0.25); 
+      animation: futuristicPulse 1.8s infinite; 
     }
     
     .track-content h4 { font-size: 13px; font-weight: 700; color: #212121; }
-    .track-content p { font-size: 11px; color: #555; margin-top: 2px; }
-    .track-time { font-size: 10px; color: #878787; margin-top: 3px; font-weight: 500; }
+    .track-content p { font-size: 11px; color: #555; margin-top: 3px; }
+    .track-time { font-size: 10px; color: #878787; margin-top: 4px; font-weight: 600; }
     
-    .btn-home { display: block; width: 100%; text-align: center; background: var(--fk-blue); color: #fff; padding: 12px; border-radius: 4px; text-decoration: none; font-weight: 700; margin-top: 15px; text-transform: uppercase; font-size: 13px; transition: background 0.2s; }
-    .btn-home:hover { background: #1d5fc7; }
+    /* High-Tech Glowing Button */
+    .btn-home { 
+      display: block; width: 100%; text-align: center; background: var(--fk-blue); color: #fff; 
+      padding: 13px; border-radius: 4px; text-decoration: none; font-weight: 700; margin-top: 20px; 
+      text-transform: uppercase; font-size: 13px; transition: all 0.3s ease; 
+      box-shadow: 0 4px 12px rgba(40,116,240,0.3);
+    }
+    .btn-home:hover { background: #1d5fc7; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(40,116,240,0.4); }
 
-    /* Keyframe Animations */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
+    /* Advanced Keyframe Animations */
+    @keyframes futuristicPop {
+      0% { opacity: 0; transform: scale(0.95) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes slideInUp {
       to { opacity: 1; transform: translateY(0); }
     }
-    @keyframes fadeInRight {
-      from { opacity: 0; transform: translateX(-15px); }
-      to { opacity: 1; transform: translateX(0); }
+    @keyframes bounceGlow {
+      0% { transform: scale(1); box-shadow: 0 0 5px rgba(56,142,60,0.2); }
+      100% { transform: scale(1.06); box-shadow: 0 0 15px rgba(56,142,60,0.5); }
     }
-    @keyframes bounceIn {
-      0% { transform: scale(0); }
-      70% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-    @keyframes pulseGlow {
-      0% { box-shadow: 0 0 0 0 rgba(40,116,240,0.4); }
-      70% { box-shadow: 0 0 0 8px rgba(40,116,240,0); }
+    @keyframes futuristicPulse {
+      0% { box-shadow: 0 0 0 0 rgba(40,116,240,0.5); }
+      70% { box-shadow: 0 0 0 10px rgba(40,116,240,0); }
       100% { box-shadow: 0 0 0 0 rgba(40,116,240,0); }
     }
   </style>
@@ -98,7 +105,7 @@
     <div class="card success-box">
       <div class="success-icon"><i class="fa-solid fa-check"></i></div>
       <h2 style="color: #212121; font-size: 18px; margin-bottom: 4px;">Order Placed Successfully!</h2>
-      <p style="color: #666; font-size: 12px;">Payment Status: <b style="color:var(--fk-green);">Approved by Admin</b></p>
+      <p style="color: #666; font-size: 12px;">Order Status: <b id="displayStatus" style="color:var(--fk-green);">Pending Admin Approval</b></p>
 
       <div class="order-badge">
         Order ID: #<span id="displayOrderId">849201</span>
@@ -118,28 +125,28 @@
         <div class="track-step completed">
           <div class="track-icon"><i class="fa-solid fa-check"></i></div>
           <div class="track-content">
-            <h4>Payment Approved by Admin</h4>
-            <p>Your payment has been successfully verified and approved.</p>
+            <h4>Order Placed & Registered</h4>
+            <p>Your order has been recorded in the system successfully.</p>
             <div class="track-time" id="timeStep1">Loading real-time date...</div>
           </div>
         </div>
 
         <!-- Step 2 -->
-        <div class="track-step completed">
-          <div class="track-icon"><i class="fa-solid fa-check"></i></div>
+        <div class="track-step active">
+          <div class="track-icon"><i class="fa-solid fa-clock"></i></div>
           <div class="track-content">
-            <h4>Order Confirmed & Packed</h4>
-            <p>Your item has been safely packed in the warehouse.</p>
-            <div class="track-time" id="timeStep2">Loading real-time date...</div>
+            <h4>Admin Verification & Approval</h4>
+            <p id="adminStatusText">Checking payment / state shipping policy restrictions.</p>
+            <div class="track-time" id="timeStep2">Awaiting action</div>
           </div>
         </div>
 
         <!-- Step 3 -->
-        <div class="track-step active">
-          <div class="track-icon"><i class="fa-solid fa-truck"></i></div>
+        <div class="track-step">
+          <div class="track-icon">3</div>
           <div class="track-content">
             <h4>Dispatched via Express / BlueDart</h4>
-            <p>Your item has been picked up by delivery partner.</p>
+            <p>Item will be picked up by delivery partner after approval.</p>
             <div class="track-time">In Transit</div>
           </div>
         </div>
@@ -149,7 +156,7 @@
           <div class="track-icon">4</div>
           <div class="track-content">
             <h4>Out for Delivery</h4>
-            <p>Your item is out for delivery to your address.</p>
+            <p>Your item will arrive at your address.</p>
             <div class="track-time">Expected in 3-4 Days</div>
           </div>
         </div>
@@ -166,6 +173,11 @@
       document.getElementById('displayName').innerText = savedData.name;
       document.getElementById('displayAddress').innerText = savedData.address + ' (' + savedData.location + ')';
       document.getElementById('displayItem').innerText = savedData.item;
+      document.getElementById('displayStatus').innerText = savedData.status;
+
+      if(savedData.status.includes("Approved")) {
+        document.getElementById('adminStatusText').innerText = "Admin has approved your order and restriction has been removed.";
+      }
 
       let orderDate = savedData.createdAt ? new Date(savedData.createdAt) : new Date();
       
@@ -176,8 +188,8 @@
       }
 
       document.getElementById('timeStep1').innerText = formatDate(orderDate);
-      let packDate = new Date(orderDate.getTime() + (30 * 60 * 1000));
-      document.getElementById('timeStep2').innerText = formatDate(packDate);
+      let verifyDate = new Date(orderDate.getTime() + (15 * 60 * 1000));
+      document.getElementById('timeStep2').innerText = formatDate(verifyDate);
     }
   </script>
 </body>
