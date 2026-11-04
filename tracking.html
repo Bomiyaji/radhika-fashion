@@ -25,7 +25,7 @@
     .card { 
       background: #fff; border-radius: 6px; padding: 18px; 
       box-shadow: 0 4px 15px rgba(0,0,0,0.08); border: 1px solid #e0e0e0; 
-      margin-bottom: 15px; animation: futuristicPop 0.7s cubic-bezier(0.16, 1, 0.3, 1); 
+      margin-bottom: 15px; 
     }
     
     .success-box { text-align: center; padding: 10px 0; }
@@ -34,34 +34,27 @@
       width: 70px; height: 70px; background: #e8f5e9; color: var(--fk-green); 
       border-radius: 50%; display: flex; align-items: center; justify-content: center; 
       font-size: 32px; margin: 0 auto 14px auto; 
-      animation: bounceGlow 1.2s infinite alternate; 
     }
     
-    .order-badge { background: #e3f2fd; color: var(--fk-blue); display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 700; margin: 10px 0; font-size: 13px; box-shadow: 0 2px 6px rgba(40,116,240,0.15); }
+    .order-badge { background: #e3f2fd; color: var(--fk-blue); display: inline-block; padding: 6px 16px; border-radius: 20px; font-weight: 700; margin: 10px 0; font-size: 13px; }
 
     .tracking-container { margin-top: 20px; padding-left: 5px; text-align: left; }
     
-    .track-step { display: flex; gap: 14px; position: relative; padding-bottom: 26px; opacity: 0; transform: translateY(15px); animation: slideInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .track-step:nth-child(1) { animation-delay: 0.15s; }
-    .track-step:nth-child(2) { animation-delay: 0.3s; }
-    .track-step:nth-child(3) { animation-delay: 0.45s; }
-    .track-step:nth-child(4) { animation-delay: 0.6s; }
-
+    .track-step { display: flex; gap: 14px; position: relative; padding-bottom: 26px; }
     .track-step:last-child { padding-bottom: 0; }
-    .track-step:not(:last-child):before { content: ''; position: absolute; left: 11px; top: 24px; width: 2px; height: calc(100% - 10px); background-color: #e0e0e0; transition: background 0.3s; }
     
-    /* Connectors turn green when completed */
-    .track-step.completed:not(:last-child):before { background-color: var(--fk-green); }
-    
-    .track-icon { width: 24px; height: 24px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; z-index: 2; flex-shrink: 0; transition: all 0.3s ease; }
-    .track-step.completed .track-icon { background: var(--fk-green); box-shadow: 0 0 10px rgba(56,142,60,0.4); }
-    .track-step.pending-alert .track-icon { background: var(--fk-red); box-shadow: 0 0 10px rgba(211,47,47,0.4); }
-    
-    .track-step.active .track-icon { 
-      background: var(--fk-blue); 
-      box-shadow: 0 0 0 6px rgba(40,116,240,0.25); 
-      animation: futuristicPulse 1.8s infinite; 
+    /* Line connection between steps */
+    .track-step:not(:last-child):before { 
+      content: ''; position: absolute; left: 11px; top: 24px; width: 2px; height: calc(100% - 10px); 
+      background-color: #e0e0e0; transition: background 0.3s; 
     }
+    .track-step.completed:not(:last-child):before { background-color: var(--fk-green) !important; }
+    
+    .track-icon { width: 24px; height: 24px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; z-index: 2; flex-shrink: 0; }
+    
+    .track-step.completed .track-icon { background: var(--fk-green) !important; color: #fff !important; }
+    .track-step.pending-alert .track-icon { background: var(--fk-red) !important; color: #fff !important; }
+    .track-step.active .track-icon { background: var(--fk-blue) !important; color: #fff !important; }
     
     .track-content h4 { font-size: 13px; font-weight: 700; color: #212121; }
     .track-content p { font-size: 11px; color: #555; margin-top: 3px; }
@@ -70,26 +63,7 @@
     .btn-home { 
       display: block; width: 100%; text-align: center; background: var(--fk-blue); color: #fff; 
       padding: 13px; border-radius: 4px; text-decoration: none; font-weight: 700; margin-top: 20px; 
-      text-transform: uppercase; font-size: 13px; transition: all 0.3s ease; 
-      box-shadow: 0 4px 12px rgba(40,116,240,0.3);
-    }
-    .btn-home:hover { background: #1d5fc7; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(40,116,240,0.4); }
-
-    @keyframes futuristicPop {
-      0% { opacity: 0; transform: scale(0.95) translateY(20px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    @keyframes slideInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes bounceGlow {
-      0% { transform: scale(1); box-shadow: 0 0 5px rgba(56,142,60,0.2); }
-      100% { transform: scale(1.06); box-shadow: 0 0 15px rgba(56,142,60,0.5); }
-    }
-    @keyframes futuristicPulse {
-      0% { box-shadow: 0 0 0 0 rgba(40,116,240,0.5); }
-      70% { box-shadow: 0 0 0 10px rgba(40,116,240,0); }
-      100% { box-shadow: 0 0 0 0 rgba(40,116,240,0); }
+      text-transform: uppercase; font-size: 13px; 
     }
   </style>
 </head>
@@ -120,41 +94,41 @@
 
       <div class="tracking-container">
         <!-- Step 1 -->
-        <div class="track-step completed" id="step1Element">
+        <div class="track-step completed" id="step1">
           <div class="track-icon"><i class="fa-solid fa-check"></i></div>
           <div class="track-content">
             <h4>Order Placed & Registered</h4>
-            <p>Your order has been recorded in the system successfully.</p>
+            <p>Your order has been recorded successfully.</p>
             <div class="track-time" id="timeStep1">Loading...</div>
           </div>
         </div>
 
-        <!-- Step 2 (Admin Approval) -->
-        <div class="track-step pending-alert" id="step2Element">
-          <div class="track-icon" id="step2Icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <!-- Step 2 -->
+        <div class="track-step pending-alert" id="step2">
+          <div class="track-icon" id="icon2"><i class="fa-solid fa-triangle-exclamation"></i></div>
           <div class="track-content">
             <h4>Admin Verification & Approval</h4>
-            <p id="adminStatusText">Awaiting Admin approval due to shipping/state restrictions.</p>
+            <p id="text2">Awaiting Admin approval due to state restrictions.</p>
             <div class="track-time" id="timeStep2">Pending Review</div>
           </div>
         </div>
 
-        <!-- Step 3 (Dispatched) -->
-        <div class="track-step" id="step3Element">
-          <div class="track-icon" id="step3Icon">3</div>
+        <!-- Step 3 -->
+        <div class="track-step" id="step3">
+          <div class="track-icon" id="icon3">3</div>
           <div class="track-content">
             <h4>Dispatched via Express / BlueDart</h4>
-            <p id="dispatchStatusText">Item will be handed over to courier partner after approval.</p>
+            <p id="text3">Item will be handed over to courier partner after approval.</p>
             <div class="track-time" id="timeStep3">Waiting for Dispatch</div>
           </div>
         </div>
 
-        <!-- Step 4 (Out for Delivery) -->
-        <div class="track-step" id="step4Element">
-          <div class="track-icon" id="step4Icon">4</div>
+        <!-- Step 4 -->
+        <div class="track-step" id="step4">
+          <div class="track-icon" id="icon4">4</div>
           <div class="track-content">
             <h4>Out for Delivery</h4>
-            <p id="outStatusText">Your item will arrive at your address.</p>
+            <p id="text4">Your item will arrive at your address.</p>
             <div class="track-time" id="timeStep4">Expected in 3-4 Days</div>
           </div>
         </div>
@@ -172,23 +146,6 @@
       document.getElementById('displayAddress').innerText = savedData.address + ' (' + savedData.location + ')';
       document.getElementById('displayItem').innerText = savedData.item;
       
-      const statusDisplay = document.getElementById('displayStatus');
-      
-      const step2 = document.getElementById('step2Element');
-      const step2Icon = document.getElementById('step2Icon');
-      const adminStatusText = document.getElementById('adminStatusText');
-      const timeStep2 = document.getElementById('timeStep2');
-
-      const step3 = document.getElementById('step3Element');
-      const step3Icon = document.getElementById('step3Icon');
-      const dispatchStatusText = document.getElementById('dispatchStatusText');
-      const timeStep3 = document.getElementById('timeStep3');
-
-      const step4 = document.getElementById('step4Element');
-      const step4Icon = document.getElementById('step4Icon');
-      const outStatusText = document.getElementById('outStatusText');
-      const timeStep4 = document.getElementById('timeStep4');
-
       let orderDate = savedData.createdAt ? new Date(savedData.createdAt) : new Date();
       function formatDate(dateObj) {
         const options = { weekday: 'short', day: 'numeric', month: 'short', year: '2-digit' };
@@ -198,71 +155,94 @@
       document.getElementById('timeStep1').innerText = formatDate(orderDate);
 
       const status = savedData.status || "";
+      const statusDisplay = document.getElementById('displayStatus');
+
+      const s1 = document.getElementById('step1');
+      const s2 = document.getElementById('step2');
+      const s3 = document.getElementById('step3');
+      const s4 = document.getElementById('step4');
+
+      const icon2 = document.getElementById('icon2');
+      const icon3 = document.getElementById('icon3');
+      const icon4 = document.getElementById('icon4');
+
+      const text2 = document.getElementById('text2');
+      const text3 = document.getElementById('text3');
+      const text4 = document.getElementById('text4');
+
+      const time2 = document.getElementById('timeStep2');
+      const time3 = document.getElementById('timeStep3');
+      const time4 = document.getElementById('timeStep4');
 
       if (status.includes("Out for Delivery")) {
-        // --- STEP 4 COMPLETED (Out for Delivery) ---
         statusDisplay.innerText = "Out for Delivery";
         statusDisplay.style.color = "var(--fk-green)";
 
-        step2.className = "track-step completed";
-        step2Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
-        timeStep2.innerText = "Approved by Admin";
+        s1.className = "track-step completed";
+        
+        s2.className = "track-step completed";
+        icon2.innerHTML = '<i class="fa-solid fa-check"></i>';
+        text2.innerText = "Admin has successfully verified and approved your order.";
+        time2.innerText = "Approved";
 
-        step3.className = "track-step completed";
-        step3Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
-        timeStep3.innerText = "Dispatched via Express";
+        s3.className = "track-step completed";
+        icon3.innerHTML = '<i class="fa-solid fa-check"></i>';
+        text3.innerText = "Item picked up by courier partner and in transit.";
+        time3.innerText = "Dispatched";
 
-        step4.className = "track-step completed";
-        step4Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
-        outStatusText.innerText = "Your item is out for delivery with our delivery partner today.";
-        timeStep4.innerText = "Out for Delivery Today";
+        s4.className = "track-step completed";
+        icon4.innerHTML = '<i class="fa-solid fa-check"></i>';
+        text4.innerText = "Your item is out for delivery with our delivery partner today.";
+        time4.innerText = "Out for Delivery Today";
 
       } else if (status.includes("Dispatched")) {
-        // --- STEP 3 COMPLETED (Dispatched) ---
         statusDisplay.innerText = "Dispatched via Express";
         statusDisplay.style.color = "var(--fk-green)";
 
-        step2.className = "track-step completed";
-        step2Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
-        timeStep2.innerText = "Approved by Admin";
+        s1.className = "track-step completed";
 
-        step3.className = "track-step completed";
-        step3Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
-        dispatchStatusText.innerText = "Your item has been picked up by courier partner and is in transit.";
-        timeStep3.innerText = "In Transit";
+        s2.className = "track-step completed";
+        icon2.innerHTML = '<i class="fa-solid fa-check"></i>';
+        text2.innerText = "Admin has successfully verified and approved your order.";
+        time2.innerText = "Approved";
 
-        step4.className = "track-step active";
-        step4Icon.innerHTML = '<i class="fa-solid fa-truck-fast"></i>';
-        outStatusText.innerText = "Your item will arrive at your address soon.";
-        timeStep4.innerText = "Expected Soon";
+        s3.className = "track-step completed";
+        icon3.innerHTML = '<i class="fa-solid fa-check"></i>';
+        text3.innerText = "Your item has been picked up by courier partner and is in transit.";
+        time3.innerText = "In Transit";
+
+        s4.className = "track-step active";
+        icon4.innerHTML = '<i class="fa-solid fa-truck-fast"></i>';
+        text4.innerText = "Your item will arrive at your address soon.";
+        time4.innerText = "Expected Soon";
 
       } else if (status.includes("Approved")) {
-        // --- STEP 2 COMPLETED (Approved) ---
         statusDisplay.innerText = "Approved by Admin";
         statusDisplay.style.color = "var(--fk-green)";
 
-        step2.className = "track-step completed";
-        step2Icon.innerHTML = '<i class="fa-solid fa-check"></i>';
-        adminStatusText.innerText = "Admin has successfully verified and approved your order.";
-        timeStep2.innerText = "Approved";
+        s1.className = "track-step completed";
 
-        step3.className = "track-step active";
-        step3Icon.innerHTML = '<i class="fa-solid fa-truck"></i>';
-        dispatchStatusText.innerText = "Ready for dispatch / Handing over to courier.";
-        timeStep3.innerText = "Processing";
+        s2.className = "track-step completed";
+        icon2.innerHTML = '<i class="fa-solid fa-check"></i>';
+        text2.innerText = "Admin has successfully verified and approved your order.";
+        time2.innerText = "Approved";
 
-        step4.className = "track-step";
-        step4Icon.innerHTML = "4";
+        s3.className = "track-step active";
+        icon3.innerHTML = '<i class="fa-solid fa-truck"></i>';
+        text3.innerText = "Ready for dispatch / Handing over to courier.";
+        time3.innerText = "Processing";
+
+        s4.className = "track-step";
+        icon4.innerHTML = "4";
 
       } else {
-        // --- PENDING STATE ---
         statusDisplay.innerText = "Pending Admin Approval";
         statusDisplay.style.color = "var(--fk-red)";
 
-        step2.className = "track-step pending-alert";
-        step2Icon.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
-        adminStatusText.innerText = "Pending Admin Approval. COD is restricted for your state. Awaiting verification.";
-        timeStep2.innerText = "Action Required";
+        s2.className = "track-step pending-alert";
+        icon2.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+        text2.innerText = "Pending Admin Approval. COD is restricted for your state. Awaiting verification.";
+        time2.innerText = "Action Required";
       }
     }
   </script>
