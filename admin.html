@@ -6,10 +6,10 @@
   <title>Radhika Fashion - Secret Admin Panel</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root { --fk-blue: #2874f0; --bg-gray: #f1f3f6; --fk-green: #388e3c; }
+    :root { --fk-blue: #2874f0; --bg-gray: #f1f3f6; --fk-green: #388e3c; --fk-orange: #fb641b; }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
     body { background: var(--bg-gray); padding: 20px; color: #212121; }
-    .admin-container { max-width: 900px; margin: 0 auto; }
+    .admin-container { max-width: 1000px; margin: 0 auto; }
     .login-box, .panel-box { background: #fff; padding: 20px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .hidden { display: none; }
     .form-control { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
@@ -18,8 +18,10 @@
     table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
     th, td { border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle; }
     th { background: var(--fk-blue); color: white; }
-    .btn-action { background: #e65100; color: #fff; border: none; padding: 6px 10px; font-size: 11px; border-radius: 3px; cursor: pointer; font-weight: 600; margin-top: 5px; }
-    .btn-action:hover { background: #c44100; }
+    
+    .btn-approve { background: #388e3c; color: #fff; border: none; padding: 6px 10px; font-size: 10px; border-radius: 3px; cursor: pointer; font-weight: 600; margin: 2px 0; display: block; width: 100%; text-align: center; }
+    .btn-dispatch { background: #2874f0; color: #fff; border: none; padding: 6px 10px; font-size: 10px; border-radius: 3px; cursor: pointer; font-weight: 600; margin: 2px 0; display: block; width: 100%; text-align: center; }
+    .btn-out { background: #fb641b; color: #fff; border: none; padding: 6px 10px; font-size: 10px; border-radius: 3px; cursor: pointer; font-weight: 600; margin: 2px 0; display: block; width: 100%; text-align: center; }
   </style>
 </head>
 <body>
@@ -43,7 +45,7 @@
               <th>Customer & Email</th>
               <th>Delivery Address</th>
               <th>Item & Size</th>
-              <th>Status & Action</th>
+              <th>Status & Control Actions</th>
             </tr>
           </thead>
           <tbody id="ordersTableBody">
@@ -101,9 +103,15 @@
               <td>${order.address}<br><b>${order.location}</b></td>
               <td>${order.item}</td>
               <td>
-                <span id="status-${docId}" style="color:var(--fk-green); font-weight:bold;">${order.status}</span><br>
-                <button class="btn-action" onclick="removeRestriction('${docId}')">
-                  Approve / Remove Restriction
+                <span id="status-${docId}" style="color:var(--fk-green); font-weight:bold;">${order.status || 'Pending Admin Approval'}</span><br><br>
+                <button class="btn-approve" onclick="updateOrderStatus('${docId}', 'Approved by Admin')">
+                  <i class="fa-solid fa-check"></i> 1. Approve Order
+                </button>
+                <button class="btn-dispatch" onclick="updateOrderStatus('${docId}', 'Dispatched via Express')">
+                  <i class="fa-solid fa-truck"></i> 2. Mark Dispatched
+                </button>
+                <button class="btn-out" onclick="updateOrderStatus('${docId}', 'Out for Delivery')">
+                  <i class="fa-solid fa-box-open"></i> 3. Out for Delivery
                 </button>
               </td>
             </tr>
@@ -118,13 +126,13 @@
       }
     }
 
-    window.removeRestriction = async function(docId) {
+    window.updateOrderStatus = async function(docId, newStatus) {
       try {
         const orderRef = doc(db, "orders", docId);
         await updateDoc(orderRef, {
-          status: "Approved by Admin (Dispatched)"
+          status: newStatus
         });
-        alert("Customer order restriction removed & status approved successfully!");
+        alert("Order status successfully updated to: " + newStatus);
         loadOrders();
       } catch (e) {
         alert("Error updating status: " + e.message);
