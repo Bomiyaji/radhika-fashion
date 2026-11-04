@@ -3,76 +3,304 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radhika Fashion - Order Form</title>
+  <title>Radhika Fashion Collection - Store</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root { --fk-blue: #2874f0; --fk-yellow: #ffe500; --fk-red: #d32f2f; --bg-gray: #f1f3f6; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
-    body { background-color: var(--bg-gray); padding-bottom: 40px; color: #212121; }
-    .header { background-color: var(--fk-blue); color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+    :root {
+      --fk-blue: #2874f0;
+      --fk-yellow: #ffe500;
+      --fk-orange: #fb641b;
+      --fk-green: #388e3c;
+      --bg-gray: #f1f3f6;
+      --text-dark: #212121;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: var(--bg-gray); color: var(--text-dark); padding-bottom: 40px; }
+    .header { background-color: var(--fk-blue); color: white; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
+    .brand-logo { font-size: 18px; font-weight: 800; font-style: italic; }
+    .brand-logo span { color: var(--fk-yellow); font-style: normal; font-size: 12px; background: rgba(255,255,255,0.15); padding: 2px 5px; border-radius: 3px; }
+    .secure-badge { font-size: 11px; background: rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 4px; font-weight: 600; }
+    .warning-notice { background: #fff3cd; color: #856404; padding: 10px; font-size: 12px; font-weight: 600; text-align: center; border-bottom: 1px solid #ffeeba; }
+    .banner { background: linear-gradient(135deg, #2e7d32, #388e3c); color: #fff; font-size: 12px; font-weight: 700; text-align: center; padding: 8px; }
     .container { max-width: 500px; margin: 15px auto; padding: 0 10px; }
-    .card { background: #fff; border-radius: 6px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-    .warning-banner { background: #ffebee; color: var(--fk-red); padding: 10px; border-radius: 4px; font-size: 12px; font-weight: 600; margin-bottom: 15px; border: 1px solid #ffcdd2; display: flex; gap: 8px; align-items: center; }
+    .card { background: #fff; border-radius: 4px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e0e0e0; margin-bottom: 15px; }
+    .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; color: var(--text-dark); }
     .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 5px; color: #333; }
-    .form-control { width: 100%; padding: 11px; border: 1px solid #dcdcdc; border-radius: 4px; font-size: 13px; }
-    .btn-submit { background: var(--fk-yellow); color: #212121; border: none; width: 100%; padding: 13px; font-weight: 800; font-size: 14px; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #333; }
+    .form-control { width: 100%; padding: 11px; border: 1px solid #d4d5d9; border-radius: 4px; font-size: 14px; outline: none; background: #fff; }
+    .form-control:focus { border-color: var(--fk-blue); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-action { width: 100%; background-color: var(--fk-orange); color: white; border: none; padding: 13px; font-size: 14px; font-weight: 700; border-radius: 4px; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.15); }
+    .btn-action:hover { background-color: #e55613; }
+    .toggle-auth { text-align: center; margin-top: 10px; font-size: 12px; color: var(--fk-blue); cursor: pointer; font-weight: 600; }
+    .hidden { display: none; }
+    .alert-box { background: #ffebee; color: #c62828; padding: 10px; border-radius: 4px; font-size: 12px; margin-bottom: 12px; border: 1px solid #ffcdd2; display: none; }
+    .logout-btn { background: rgba(255,255,255,0.2); border: none; color: #fff; padding: 4px 8px; font-size: 11px; border-radius: 4px; cursor: pointer; font-weight: 600; }
   </style>
 </head>
 <body>
+
   <div class="header">
-    <div style="font-weight: 800; font-style: italic;">Radhika Fashion Collection</div>
-    <button onclick="logoutUser()" style="background:none; border:none; color:#fff; cursor:pointer; font-size:12px;"><i class="fa-solid fa-right-from-bracket"></i> Log out</button>
+    <div class="brand-logo">Radhika Fashion Collection <span>Store</span></div>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <button class="logout-btn hidden" id="logoutBtn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      <div class="secure-badge"><i class="fa-solid fa-shield-halved"></i> Secure</div>
+    </div>
+  </div>
+
+  <div class="warning-notice">
+    <i class="fa-solid fa-triangle-exclamation"></i> Note: COD is NOT available for other states (outside Delhi) due to shipping policies. Advance online payment / Admin approval required.
+  </div>
+
+  <div class="banner">
+    <i class="fa-solid fa-circle-check"></i> Payment Status: APPROVED BY ADMIN (Pre-Paid)
   </div>
 
   <div class="container">
-    <div class="card">
-      <div class="warning-banner">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <span><strong>COD Notice:</strong> Cash on Delivery restricted for Non-Delhi regions without Admin approval.</span>
+    <!-- Auth Card -->
+    <div class="card" id="authCard">
+      <div class="section-title"><i class="fa-solid fa-lock" style="color: var(--fk-blue);"></i> <span id="authTitle">Customer Login</span></div>
+      
+      <div class="alert-box" id="authAlert"></div>
+
+      <div class="form-group">
+        <label>Email ID *</label>
+        <input type="email" id="authEmail" class="form-control" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label>Password *</label>
+        <input type="password" id="authPassword" class="form-control" placeholder="Enter password" required>
       </div>
 
-      <h2 style="font-size: 16px; margin-bottom: 15px;"><i class="fa-solid fa-bag-shopping"></i> Delivery & Address Form</h2>
+      <button type="button" class="btn-action" id="authBtn" onclick="handleAuth()">Login to Store</button>
+      <div class="toggle-auth" id="toggleAuthText" onclick="toggleAuthMode()">New User? Create Account with Password</div>
+    </div>
 
-      <form onsubmit="submitOrder(event)">
+    <!-- Previous Order Notice Card -->
+    <div class="card hidden" id="previousOrderCard" style="background: #e8f5e9; border-color: #c8e6c9;">
+      <div class="section-title" style="color: #2e7d32;"><i class="fa-solid fa-clipboard-check"></i> Welcome Back! Previous Order Found</div>
+      <p style="font-size: 12px; color: #333; margin-bottom: 8px;">We found an existing order associated with your account:</p>
+      <div id="prevOrderDetails" style="font-size: 12px; line-height: 1.5; color: #444;"></div>
+      
+      <div style="display: flex; gap: 10px; margin-top: 12px;">
+        <button type="button" class="btn-action" style="background: #388e3c; flex: 1;" onclick="goToTracking()">View Live Tracking Status</button>
+        <button type="button" class="btn-action" style="background: var(--fk-blue); flex: 1;" onclick="showNewOrderForm()">Place New Order</button>
+      </div>
+    </div>
+
+    <!-- Checkout Form -->
+    <div class="card hidden" id="orderCard">
+      <div class="section-title"><i class="fa-solid fa-truck-fast" style="color: var(--fk-blue);"></i> Enter Delivery Details</div>
+      
+      <form id="orderForm">
         <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="custName" class="form-control" placeholder="Enter full name" required>
+          <label>Your Full Name *</label>
+          <input type="text" id="name" class="form-control" placeholder="Enter full name" required>
         </div>
+
         <div class="form-group">
-          <label>Phone Number</label>
-          <input type="tel" id="custPhone" class="form-control" placeholder="10-digit mobile number" required>
+          <label>Full Address *</label>
+          <input type="text" id="address" class="form-control" placeholder="House No., Street, Area, Landmark" required>
         </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label>State *</label>
+            <select id="state" class="form-control" required>
+              <option value="">Select State</option>
+              <option value="Delhi">Delhi</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Other State">Other State</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Pincode *</label>
+            <input type="text" id="pincode" class="form-control" placeholder="6-digit Pincode" maxlength="6" required>
+          </div>
+        </div>
+
         <div class="form-group">
-          <label>Select Item & Size</label>
-          <select id="custItem" class="form-control">
-            <option value="Bottle Green | Size: XL">Bottle Green Designer Suit (Size: XL)</option>
-            <option value="Maroon Suit | Size: M">Maroon Velvet Suit (Size: M)</option>
-            <option value="Royal Blue | Size: L">Royal Blue Party Wear Kurti (Size: L)</option>
-            <option value="Classic Black Design | Size: 5XL">Classic Black Heavy Embroidery (Size: 5XL)</option>
+          <label>Select Item Color / Design *</label>
+          <select id="color" class="form-control" required>
+            <option value="">Choose Item / Color</option>
+            <option value="Yellow / Multi Lehenga">Yellow / Multi Lehenga</option>
+            <option value="Royal Blue Kurti">Royal Blue Kurti</option>
+            <option value="Maroon Suit">Maroon Suit</option>
+            <option value="Bottle Green Kurti">Bottle Green Kurti</option>
+            <option value="Baby Pink Lehenga">Baby Pink Lehenga</option>
+            <option value="Classic Black Design">Classic Black Design</option>
           </select>
         </div>
+
         <div class="form-group">
-          <label>Select Region / Location</label>
-          <select id="custLocation" class="form-control">
-            <option value="Delhi">Delhi (Instant COD)</option>
-            <option value="Rajasthan">Rajasthan (COD Restricted - Approval Needed)</option>
-            <option value="Haryana">Haryana (COD Restricted - Approval Needed)</option>
-            <option value="Uttar Pradesh">Uttar Pradesh (COD Restricted)</option>
-            <option value="Other State">Other State (COD Restricted)</option>
+          <label>Select Size *</label>
+          <select id="size" class="form-control" required>
+            <option value="">Choose Size</option>
+            <option value="S">S</option><option value="M">M</option><option value="L">L</option>
+            <option value="XL">XL</option><option value="XXL">XXL</option><option value="5XL">5XL</option><option value="6XL">6XL</option>
           </select>
         </div>
+
         <div class="form-group">
-          <label>Delivery Address with Pincode</label>
-          <textarea id="custAddress" class="form-control" rows="3" placeholder="House No, Street, Landmark, Pincode" required></textarea>
+          <label>Contact Number (WhatsApp) *</label>
+          <input type="tel" id="phone" class="form-control" placeholder="10-digit mobile number" maxlength="10" required>
         </div>
-        <button type="submit" class="btn-submit">Confirm Order & Track</button>
+
+        <button type="button" class="btn-action" onclick="submitOrder()">
+          Confirm Order & Track Status <i class="fa-solid fa-arrow-right"></i>
+        </button>
       </form>
     </div>
   </div>
-  <script type="module" src="app.js"></script>
-  <script>
-    window.onload = function() { checkSession(true); };
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, collection, addDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB6Um_HJ8vyaaSm-JMzdGIDl8pZdw4yZ1U",
+      authDomain: "radhika-fashion-ae2db.firebaseapp.com",
+      projectId: "radhika-fashion-ae2db",
+      storageBucket: "radhika-fashion-ae2db.firebasestorage.app",
+      messagingSenderId: "703545319327",
+      appId: "1:703545319327:web:b3f77140a2ddfe09c3e7aa",
+      measurementId: "G-T2JZXC0MH5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let isRegisterMode = false;
+    let loggedInEmail = "";
+
+    // Persistent login check on page load
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loggedInEmail = user.email;
+        document.getElementById('authCard').classList.add('hidden');
+        document.getElementById('logoutBtn').classList.remove('hidden');
+        checkPreviousOrders(user.email);
+      } else {
+        document.getElementById('authCard').classList.remove('hidden');
+        document.getElementById('logoutBtn').classList.add('hidden');
+        document.getElementById('previousOrderCard').classList.add('hidden');
+        document.getElementById('orderCard').classList.add('hidden');
+      }
+    });
+
+    window.toggleAuthMode = function() {
+      isRegisterMode = !isRegisterMode;
+      document.getElementById('authTitle').innerText = isRegisterMode ? "Create Password Account" : "Customer Login";
+      document.getElementById('authBtn').innerText = isRegisterMode ? "Register & Continue" : "Login to Store";
+      document.getElementById('toggleAuthText').innerText = isRegisterMode ? "Already have an account? Login" : "New User? Create Account with Password";
+      document.getElementById('authAlert').style.display = 'none';
+    }
+
+    window.handleAuth = async function() {
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      const alertBox = document.getElementById('authAlert');
+      
+      if(!email || !password) {
+        alertBox.innerText = "Error: Please enter both email and password!";
+        alertBox.style.display = 'block';
+        return;
+      }
+
+      try {
+        if(isRegisterMode) {
+          await createUserWithEmailAndPassword(auth, email, password);
+        } else {
+          await signInWithEmailAndPassword(auth, email, password);
+        }
+      } catch(error) {
+        let errorMsg = error.message;
+        if(error.code === 'auth/invalid-email') errorMsg = "Invalid email address format.";
+        else if(error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') errorMsg = "Invalid email or incorrect password.";
+        else if(error.code === 'auth/wrong-password') errorMsg = "Incorrect password entered.";
+        else if(error.code === 'auth/email-already-in-use') errorMsg = "Email already registered. Please login instead.";
+        
+        alertBox.innerText = "Authentication Error: " + errorMsg;
+        alertBox.style.display = 'block';
+      }
+    }
+
+    window.handleLogout = async function() {
+      await signOut(auth);
+      localStorage.removeItem('radhikaOrder');
+      location.reload();
+    }
+
+    async function checkPreviousOrders(email) {
+      try {
+        const q = query(collection(db, "orders"), where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          let orderData = null;
+          querySnapshot.forEach((doc) => {
+            orderData = doc.data();
+          });
+          localStorage.setItem('radhikaOrder', JSON.stringify(orderData));
+
+          document.getElementById('prevOrderDetails').innerHTML = `
+            <b>Order ID:</b> #${orderData.orderId}<br>
+            <b>Name:</b> ${orderData.name}<br>
+            <b>Item:</b> ${orderData.item}<br>
+            <b>Status:</b> <span style="color:#2e7d32; font-weight:bold;">${orderData.status}</span>
+          `;
+          document.getElementById('previousOrderCard').classList.remove('hidden');
+          document.getElementById('orderCard').classList.add('hidden');
+        } else {
+          document.getElementById('previousOrderCard').classList.add('hidden');
+          document.getElementById('orderCard').classList.remove('hidden');
+        }
+      } catch (e) {
+        document.getElementById('orderCard').classList.remove('hidden');
+      }
+    }
+
+    window.showNewOrderForm = function() {
+      document.getElementById('previousOrderCard').classList.add('hidden');
+      document.getElementById('orderCard').classList.remove('hidden');
+    }
+
+    window.goToTracking = function() {
+      window.location.href = "tracking.html";
+    }
+
+    window.submitOrder = async function() {
+      const form = document.getElementById('orderForm');
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+
+      const orderData = {
+        email: loggedInEmail,
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        location: document.getElementById('state').value + ' - ' + document.getElementById('pincode').value,
+        item: document.getElementById('color').value + ' | Size: ' + document.getElementById('size').value,
+        orderId: Math.floor(100000 + Math.random() * 900000),
+        status: "Pending Admin Approval",
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await addDoc(collection(db, "orders"), orderData);
+        localStorage.setItem('radhikaOrder', JSON.stringify(orderData));
+        window.location.href = "tracking.html";
+      } catch (e) {
+        alert("Error placing order: " + e.message);
+      }
+    }
   </script>
 </body>
 </html>
