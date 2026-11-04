@@ -49,6 +49,89 @@
       </div>
     </div>
   </div>
-  <script type="module" src="app.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB6Um_HJ8vyaaSm-JMzdGIDl8pZdw4yZ1U",
+      authDomain: "radhika-fashion-ae2db.firebaseapp.com",
+      projectId: "radhika-fashion-ae2db",
+      storageBucket: "radhika-fashion-ae2db.firebasestorage.app",
+      messagingSenderId: "703545319327",
+      appId: "1:703545319327:web:b3f77140a2ddfe09c3e7aa",
+      measurementId: "G-T2JZXC0MH5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.checkAdminPassword = function() {
+      const pass = document.getElementById('adminPass').value;
+      if(pass === "radhika123") {
+        document.getElementById('adminLoginCard').classList.add('hidden');
+        document.getElementById('adminPanelCard').classList.remove('hidden');
+        loadOrders();
+      } else {
+        alert("Wrong Password!");
+      }
+    }
+
+    async function loadOrders() {
+      const tbody = document.getElementById('ordersTableBody');
+      tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>Loading...</td></tr>";
+      
+      try {
+        const querySnapshot = await getDocs(collection(db, "orders"));
+        tbody.innerHTML = "";
+        
+        querySnapshot.forEach((documentItem) => {
+          const order = documentItem.data();
+          const docId = documentItem.id;
+          
+          tbody.innerHTML += `
+            <tr>
+              <td><b>#${order.orderId}</b></td>
+              <td><b>${order.name}</b><br><span style="color:#666; font-size:11px;">${order.email || 'N/A'}</span></td>
+              <td>${order.address}<br><b>${order.location}</b></td>
+              <td>${order.item}</td>
+              <td>
+                <span style="color:var(--fk-green); font-weight:bold;">${order.status || 'Pending'}</span><br><br>
+                <button class="btn-approve" onclick="updateOrderStatus('${docId}', 'Approved by Admin', ${order.orderId})">1. Approve</button>
+                <button class="btn-dispatch" onclick="updateOrderStatus('${docId}', 'Dispatched via Express', ${order.orderId})">2. Dispatch</button>
+                <button class="btn-out" onclick="updateOrderStatus('${docId}', 'Out for Delivery', ${order.orderId})">3. Out for Delivery</button>
+                <button class="btn-reset" onclick="updateOrderStatus('${docId}', 'Pending Admin Approval', ${order.orderId})">Reset</button>
+              </td>
+            </tr>
+          `;
+        });
+
+        if(querySnapshot.empty) {
+          tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No orders found.</td></tr>";
+        }
+      } catch (e) {
+        tbody.innerHTML = "<tr><td colspan='5' style='text-align:center; color:red;'>Error: " + e.message + "</td></tr>";
+      }
+    }
+
+    window.updateOrderStatus = async function(docId, newStatus, orderIdNum) {
+      try {
+        const orderRef = doc(db, "orders", docId);
+        await updateDoc(orderRef, { status: newStatus });
+
+        let currentSaved = JSON.parse(localStorage.getItem('radhikaOrder'));
+        if(currentSaved && currentSaved.orderId == orderIdNum) {
+          currentSaved.status = newStatus;
+          localStorage.setItem('radhikaOrder', JSON.stringify(currentSaved));
+        }
+
+        alert("Status updated to: " + newStatus);
+        loadOrders();
+      } catch (e) {
+        alert("Error: " + e.message);
+      }
+    }
+  </script>
 </body>
 </html>
