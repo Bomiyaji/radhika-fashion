@@ -18,26 +18,74 @@
     .brand-logo { font-size: 18px; font-weight: 800; font-style: italic; }
     .brand-logo span { color: #ffe500; font-style: normal; font-size: 12px; }
     .container { max-width: 500px; margin: 15px auto; padding: 0 10px; }
-    .card { background: #fff; border-radius: 4px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e0e0e0; margin-bottom: 15px; }
+    
+    /* Smooth Entrance Animation for Cards */
+    .card { 
+      background: #fff; border-radius: 4px; padding: 16px; 
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06); border: 1px solid #e0e0e0; 
+      margin-bottom: 15px; animation: fadeInUp 0.6s ease-out; 
+    }
+    
     .success-box { text-align: center; padding: 10px 0; }
-    .success-icon { width: 60px; height: 60px; background: #e8f5e9; color: var(--fk-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 12px auto; }
+    
+    /* Bounce Animation for Success Icon */
+    .success-icon { 
+      width: 65px; height: 65px; background: #e8f5e9; color: var(--fk-green); 
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+      font-size: 30px; margin: 0 auto 12px auto; animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    }
+    
     .order-badge { background: #e3f2fd; color: var(--fk-blue); display: inline-block; padding: 6px 14px; border-radius: 20px; font-weight: 700; margin: 10px 0; font-size: 13px; }
 
     .tracking-container { margin-top: 15px; padding-left: 5px; text-align: left; }
-    .track-step { display: flex; gap: 12px; position: relative; padding-bottom: 24px; }
+    
+    /* Step-by-step Fade Animations with Delay */
+    .track-step { display: flex; gap: 12px; position: relative; padding-bottom: 24px; opacity: 0; animation: fadeInRight 0.5s ease-out forwards; }
+    .track-step:nth-child(1) { animation-delay: 0.2s; }
+    .track-step:nth-child(2) { animation-delay: 0.4s; }
+    .track-step:nth-child(3) { animation-delay: 0.6s; }
+    .track-step:nth-child(4) { animation-delay: 0.8s; }
+
     .track-step:last-child { padding-bottom: 0; }
     .track-step:not(:last-child):before { content: ''; position: absolute; left: 10px; top: 22px; width: 2px; height: calc(100% - 8px); background-color: #e0e0e0; }
     .track-step.completed:not(:last-child):before { background-color: var(--fk-green); }
     
     .track-icon { width: 22px; height: 22px; border-radius: 50%; background: #e0e0e0; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; z-index: 2; flex-shrink: 0; }
     .track-step.completed .track-icon { background: var(--fk-green); }
-    .track-step.active .track-icon { background: var(--fk-blue); box-shadow: 0 0 0 4px rgba(40,116,240,0.2); }
+    
+    /* Pulsing Animation for Active Step */
+    .track-step.active .track-icon { 
+      background: var(--fk-blue); 
+      box-shadow: 0 0 0 4px rgba(40,116,240,0.2); 
+      animation: pulseGlow 1.5s infinite; 
+    }
     
     .track-content h4 { font-size: 13px; font-weight: 700; color: #212121; }
     .track-content p { font-size: 11px; color: #555; margin-top: 2px; }
     .track-time { font-size: 10px; color: #878787; margin-top: 3px; font-weight: 500; }
     
-    .btn-home { display: block; width: 100%; text-align: center; background: var(--fk-blue); color: #fff; padding: 12px; border-radius: 4px; text-decoration: none; font-weight: 700; margin-top: 15px; text-transform: uppercase; font-size: 13px; }
+    .btn-home { display: block; width: 100%; text-align: center; background: var(--fk-blue); color: #fff; padding: 12px; border-radius: 4px; text-decoration: none; font-weight: 700; margin-top: 15px; text-transform: uppercase; font-size: 13px; transition: background 0.2s; }
+    .btn-home:hover { background: #1d5fc7; }
+
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(-15px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(40,116,240,0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(40,116,240,0); }
+      100% { box-shadow: 0 0 0 0 rgba(40,116,240,0); }
+    }
   </style>
 </head>
 <body>
@@ -72,7 +120,7 @@
           <div class="track-content">
             <h4>Payment Approved by Admin</h4>
             <p>Your payment has been successfully verified and approved.</p>
-            <div class="track-time" id="timeStep1">Fri, 25th Jul '25 - 4:09 pm</div>
+            <div class="track-time" id="timeStep1">Loading real-time date...</div>
           </div>
         </div>
 
@@ -82,7 +130,7 @@
           <div class="track-content">
             <h4>Order Confirmed & Packed</h4>
             <p>Your item has been safely packed in the warehouse.</p>
-            <div class="track-time" id="timeStep2">Sat, 26th Jul '25 - 9:39 am</div>
+            <div class="track-time" id="timeStep2">Loading real-time date...</div>
           </div>
         </div>
 
@@ -92,7 +140,7 @@
           <div class="track-content">
             <h4>Dispatched via Express / BlueDart</h4>
             <p>Your item has been picked up by delivery partner.</p>
-            <div class="track-time" id="timeStep3">Sun, 27th Jul '25 - 3:40 am</div>
+            <div class="track-time">In Transit</div>
           </div>
         </div>
 
@@ -119,12 +167,17 @@
       document.getElementById('displayAddress').innerText = savedData.address + ' (' + savedData.location + ')';
       document.getElementById('displayItem').innerText = savedData.item;
 
-      // Agar order time available hai toh uske hisab se dates adjust kar lein, nahi toh standard format dikhayein
-      if (savedData.createdAt) {
-        const orderDate = new Date(savedData.createdAt);
+      let orderDate = savedData.createdAt ? new Date(savedData.createdAt) : new Date();
+      
+      function formatDate(dateObj) {
         const options = { weekday: 'short', day: 'numeric', month: 'short', year: '2-digit' };
-        // Aap chaho toh ise aur dynamic kar sakte ho, filhal clean Flipkart style formatting di hai.
+        const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+        return dateObj.toLocaleDateString('en-US', options) + ' - ' + dateObj.toLocaleTimeString('en-US', timeOptions).toLowerCase();
       }
+
+      document.getElementById('timeStep1').innerText = formatDate(orderDate);
+      let packDate = new Date(orderDate.getTime() + (30 * 60 * 1000));
+      document.getElementById('timeStep2').innerText = formatDate(packDate);
     }
   </script>
 </body>
